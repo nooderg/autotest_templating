@@ -1,0 +1,10 @@
+FROM golang:alpine as prod
+
+EXPOSE 8080
+WORKDIR go/src/github.com/nooderg/autotest_templating/
+COPY ../go.mod .
+COPY ../go.sum .
+RUN go mod download -x
+COPY .. .
+
+CMD ["go", "run", "cmd/main.go"]
