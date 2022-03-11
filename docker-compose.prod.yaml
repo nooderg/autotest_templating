@@ -4,8 +4,7 @@ services:
   microservice:
     build:
       context: .
-      dockerfile: build/package/Dockerfile
-      target: prod
+      dockerfile: build/package/Dockerfile.prod
     env_file:
       - .env.prod
     ports:
