@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  microservice:
+    build:
+      context: .
+      dockerfile: build/package/Dockerfile
+      target: prod
+    env_file:
+      - .env.prod
+    ports:
+      - "8080:8080"

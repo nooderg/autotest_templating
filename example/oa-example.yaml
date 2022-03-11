@@ -18,6 +18,15 @@ paths:
           in: query
           description: How many items to return at one time (max 100)
           required: false
+          # autotest_value: 2
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+            # autotest_value: 9
+          description: How many items to return at one time (max 100)
+          required: false
           schema:
             type: integer
             format: int32
@@ -61,6 +70,7 @@ paths:
         - pets
       parameters:
         - name: petId
+          # autotest_value: 8
           in: path
           required: true
           description: The id of the pet to retrieve
