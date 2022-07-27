@@ -1,12 +1,5 @@
 package templating
 
-import (
-	"bytes"
-	"html/template"
-
-	"github.com/nooderg/autotest_templating/pkg/parsing"
-)
-
 const TAVERN_TEMPLATE_BASE = `
 ---
 test_name: Autotest templating
@@ -29,30 +22,30 @@ type TemplatingData struct {
 	Status int
 }
 
-func TemplateFile(pathDatas []parsing.PathData) (*bytes.Buffer, error) {
-	tdatas := make([]TemplatingData, 0)
-	for _, pathData := range pathDatas {
-		for _, routeData := range pathData.RouteData {
-			tdata := TemplatingData{
-				Path:   pathData.BaseUrl + routeData.Path,
-				Method: routeData.Method,
-				Status: int(routeData.Response.Status),
-			}
+// func TemplateFile(pathDatas []parsing.PathData) (*bytes.Buffer, error) {
+// 	tdatas := make([]TemplatingData, 0)
+// 	for _, pathData := range pathDatas {
+// 		for _, routeData := range pathData.RouteData {
+// 			tdata := TemplatingData{
+// 				Path:   pathData.BaseUrl + routeData.Path,
+// 				Method: routeData.Method,
+// 				Status: int(routeData.Response.Status),
+// 			}
 
-			tdatas = append(tdatas, tdata)
-		}
-	}
+// 			tdatas = append(tdatas, tdata)
+// 		}
+// 	}
 
-	t, err := template.New("TAVERN_TEMPLATE").Parse(TAVERN_TEMPLATE_BASE)
-	if err != nil {
-		return nil, err
-	}
+// 	t, err := template.New("TAVERN_TEMPLATE").Parse(TAVERN_TEMPLATE_BASE)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	var b bytes.Buffer
+// 	var b bytes.Buffer
 
-	err = t.Execute(&b, tdatas)
-	if err != nil {
-		return nil, err
-	}
-	return &b, nil
-}
+// 	err = t.Execute(&b, tdatas)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return &b, nil
+// }
