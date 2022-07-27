@@ -6,10 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/nooderg/autotest_templating/config"
-	"github.com/nooderg/autotest_templating/core/domain"
+	"gopkg.in/yaml.v3"
+
 	"github.com/nooderg/autotest_templating/pkg/parsing"
-	"github.com/nooderg/autotest_templating/pkg/templating"
 )
 
 type GenerateRequest struct {
@@ -20,7 +19,7 @@ type GenerateRequest struct {
 func Generate(w http.ResponseWriter, r *http.Request) {
 	var req GenerateRequest
 
-	err := json.NewDecoder(r.Body).Decode(&req)
+	err := yaml.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "cannot decode body", 400)
 		return
@@ -31,20 +30,13 @@ func Generate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "cannot decode body from b64", 400)
 	}
 
-	dataArr, err := parsing.ParseOpenApi(string(file))
+	jsonRes, err := parsing.ParseOpenApi(file)
 	if err != nil {
 		http.Error(w, "could not parse yaml file", 500)
 		return
 	}
-	bfile, _ := templating.TemplateFile(dataArr)
 
-	localfile, _ := os.CreateTemp(".", "autotest_tavern_template")
-	defer os.Remove(localfile.Name())
-	localfile.Write(bfile.Bytes())
-
-	go UploadFileAndSyncDB(localfile, req.UserId)
-
-	return
+	json.NewEncoder(w).Encode(jsonRes)
 }
 
 func UploadFileAndSyncDB(file *os.File, userid string) error {
@@ -68,12 +60,12 @@ func UploadFileAndSyncDB(file *os.File, userid string) error {
 
 	// log.Println(result.Location)
 
-	db := config.GetDBClient()
+	// db := config.GetDBClient()
 
-	err := db.Model(&domain.User{}).Where("id = ?", userid).Update("file_url", "https://www.youtube.com/watch?v=dQw4w9WgXcQ").Error
-	if err != nil {
-		return err
-	}
+	// err := db.Model(&domain.User{}).Where("id = ?", userid).Update("file_url", "https://www.youtube.com/watch?v=dQw4w9WgXcQ").Error
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

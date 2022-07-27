@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/nooderg/autotest_templating/config"
 	"github.com/nooderg/autotest_templating/core/service"
 )
 
@@ -14,7 +13,7 @@ func main() {
 	r := mux.NewRouter()
 
 	log.Println("Connecting to database...")
-	config.GetDBClient()
+	// config.GetDBClient()
 
 	log.Println("Connected to database!")
 
